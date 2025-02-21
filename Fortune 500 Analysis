@@ -94,3 +94,10 @@ SELECT *
 FROM fortune_companies
 WHERE healthcare_benefits = 1
 AND paid_time_off_days = 20;
+
+--Query 5: Which companies have an average employee tenure of at least 5 years?
+
+SELECT company_name, industry, avg_employee_tenure
+FROM fortune_companies
+GROUP BY avg_employee_tenure
+HAVING avg_employee_tenure >= 5;
