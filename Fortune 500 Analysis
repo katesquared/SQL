@@ -63,17 +63,34 @@ VALUES
 --Use logical operators like AND or OR to filter the data in an interesting way
 --Use an aggregate function like AVG, SUM, COUNT, MAX, and/or MIN to return summary statistics about the data
 
---Query 1: Best Work-Life Balance Company - Find the top 10 companies with the highest PTO days and longest maternity leave. Why? This helps identify companies that prioritize employee well-being.
-
+--Query 1: Find the top 10 companies with the highest PTO days and longest maternity leave. 
 
 SELECT *
 FROM fortune_companies
 ORDER BY paid_time_off_days DESC, maternity_leave_weeks DESC
 LIMIT 10;
 
---Query 2: Industry Comparison-Employee Retention - Compare the average employee tenure across different industries. Why? Some industries might have higher turnover, which can indicate work culture or job stability differences.
+--Query 2: Compare the average employee tenure across different industries. 
 
 SELECT industry, ROUND(AVG(avg_employee_tenure), 1)
 FROM fortune_companies
 GROUP BY industry
 ORDER BY AVG(avg_employee_tenure) DESC;
+
+--Query 3: Using a CASE statement to define which companies have High PTO (21+ days), Mid PTO (15-20 days), and Low PTO (0-14 days)
+
+SELECT company_name, industry, paid_time_off_days,
+CASE
+WHEN paid_time_off_days > 20 THEN 'High PTO'
+WHEN paid_time_off_days <= 14 THEN 'Low PTO'
+ELSE 'Medium PTO'
+END AS 'pto_rating'
+FROM fortune_companies
+ORDER BY paid_time_off_days DESC;
+
+--Query 4: Which companies offer both healthcare benefits AND at least 20 days of PTO?
+
+SELECT *
+FROM fortune_companies
+WHERE healthcare_benefits = 1
+AND paid_time_off_days = 20;
